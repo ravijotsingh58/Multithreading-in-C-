@@ -8,6 +8,8 @@ in C++, if we pass arguments directly without std::ref or std::reference_wrapper
 into new thread rather than being passed by reference. when variable is copied into new thread, it creates a new
 instance of the variable in the new thread's memory space. This means that any modifications made to the variable
 in the new thread will not be reflected in the original variable in the main thread.
+further, if critical throws an exception for some reason, them mutex will not be get unlocked. 
+So for that reason we should use unique locks and lock guards 
 */
 
 void performIncr(int& count, mutex& mtx){
