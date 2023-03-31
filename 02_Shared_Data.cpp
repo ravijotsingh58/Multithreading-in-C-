@@ -9,7 +9,7 @@ std::atomic<> template is used to provide atomic operations on shared variable t
 thread concurrently. If we not use atomic<> here then count variable final value will be undefined.
 But after using atomic<> here, count variable's final value is 0.
 Thats a general fix that works for this case. However, this is not a general fix for general problem i.e what happens
-when multiple threads   works on shared data
+when multiple threads   works on shared data, For that, we have to use mutex and locks.
 */
 
 int main(int argc, char** argv){
@@ -17,12 +17,12 @@ int main(int argc, char** argv){
     atomic<int> count = 0;
     const int ITERS = 1E6;
     thread th1{[&](){
-        for(int i = 1; i<= 1E6; i++)
+        for(int i = 1; i<= ITERS; i++)
             ++count;
     }};
 
     thread th2{[&](){
-        for(int i = 1;i<=1E6;i++){
+        for(int i = 1;i<=ITERS;i++){
             --count;
         }
     }};
