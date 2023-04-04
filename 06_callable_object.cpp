@@ -5,12 +5,13 @@
 #include<iostream>
 #include<thread>
 #include<mutex>
+#include<functional>
 
 using namespace std;
 
 class App{
 public:
-    void operator()(){        
+    void operator()(int step){        
         for (int i = 1; i <= 1E6; i++) {
 
             lock_guard<mutex> guard(mtx);
@@ -23,21 +24,17 @@ public:
         return count;
     }
 
-    void setstep(int _step){
-        step = _step;
-    }
-
 private:
     mutex mtx;
-    int step{1}, count;
+    int count{};
 };
 
 int main(int argc, char** argv) {
 
     App app;
 
-    thread th1{ref(app)};
-    thread th2{ref(app)};
+    thread th1{ref(app), 1};
+    thread th2{ref(app), -1};
 
     //as one thread is trying to increase the value of count and other is decreasing it, the final value
     //of count should be 0
